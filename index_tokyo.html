@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+ />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>東京行程</title>
+  <style>
+    :root {
+      --font-scale: 1;
+    }
+
+    .bg-fixed {
+      position: fixed;
+      inset: 0;
+      background: url("assets/bg/bg_trip.png") center center / cover no-repeat;
+      z-index: -1;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: transparent;
+      color: #111111;
+      height: 100vh;
+      overflow: hidden;
+}
+
+    html {
+      background: transparent;
+    }
+
+    .scroll-shell {
+      height: 100vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-top: env(safe-area-inset-top);
+      background: rgba(245,245,247,0.45);
+    }
+
+    .container {max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 16px 40px 16px;M0px;
+}
+    .header {
+      margin-bottom: 10px;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .header-title-small {
+      font-size: calc(13px * var(--font-scale));
+      color: #777777;
+      margin-bottom: 2px;
+    }
+    .header-title-main {
+      font-size: calc(20px * var(--font-scale));
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .header-sub-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .header-sub-text {
+      font-size: calc(12px * var(--font-scale));
+      color: #555555;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .today-chip {
+      font-size: calc(11px * var(--font-scale));
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #f9f9fb;
+      border: 1px solid #e0e0e0;
+      color: #555555;
+      max-width: 140px;
+      text-align: right;
+      line-height: 1.4;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.06);
+    }
+    .today-chip.active {
+      border-color: #f5c542;
+      background: #fff7d1;
+      color: #5c4300;
+    }
+    .refresh-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #dadada;
+      background: #f9f9fb;
+      font-size: calc(16px * var(--font-scale));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .refresh-btn:active {
+      background: #ececf1;
+    }
+
+    .font-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .font-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #dadada;
+      background: #f9f9fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .font-btn:active {
+      background: #ececf1;
+    }
+
+    /* 小正方形 countdown：放在三行日期文字右側，平排 */
+    .status-square {
+      min-width: 120px;
+      min-height: 60px;
+      padding: 6px 10px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      box-shadow: 0 6px 14px rgba(15,23,42,0.08);
+      text-align: center;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .status-main {
+      font-size: calc(15px * var(--font-scale));
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: #222222;
+    }
+    .status-sub {
+      font-size: calc(11px * var(--font-scale));
+      color: #777777;
+    }
+    .pull-indicator {
+      font-size: calc(11px * var(--font-scale));
+      color: #777777;
+      text-align: center;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .pull-indicator.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      margin-bottom: 14px;
+      border: 1px solid #e5e5ea;
+    }
+    .trip-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: calc(12px * var(--font-scale));
+      color: #333333;
+    }
+    .trip-row-with-logo {
+      align-items: center;
+      column-gap: 10px;
+    }
+    .trip-col {
+      flex: 1;
+    }
+    .trip-col-right {
+      text-align: right;
+    }
+    .trip-logo-col {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+    }
+    .trip-logo-img {
+      max-height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    .trip-col-title {
+      font-size: calc(11px * var(--font-scale));
+      color: #999999;
+      margin-bottom: 2px;
+    }
+    .trip-col-main {
+      font-size: calc(13px * var(--font-scale));
+    }
+    .trip-col-sub {
+      font-size: calc(11px * var(--font-scale));
+      color: #777777;
+      margin-top: 2px;
+    }
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .weather-title {
+      font-size: calc(13px * var(--font-scale));
+      font-weight: 600;
+    }
+    .weather-updated {
+      font-size: calc(10px * var(--font-scale));
+      color: #999999;
+    }
+    .weather-today {
+      font-size: calc(12px * var(--font-scale));
+      margin-bottom: 4px;
+      color: #333333;
+    }
+    .weather-sun {
+      font-size: calc(11px * var(--font-scale));
+      margin-bottom: 6px;
+      color: #777777;
+    }
+    .weather-days {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+    }
+    .weather-day {
+      min-width: 70px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid #e5e5ea;
+      background: #ffffff;
+      font-size: calc(11px * var(--font-scale));
+      text-align: center;
+    }
+    .weather-day-label {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .weather-cond {
+      margin-top: 2px;
+      color: #555555;
+    }
+    .weather-temp {
+      margin-top: 2px;
+    }
+   .day-tabs {
+display: flex;
+      gap: 8px;
+      margin: 16px 0 10px 0;
+    }
+
+.day-tab {
+flex: 1;
+      padding: 7px 0;
+      text-align: center;
+      font-size: 13px;
+      border-radius: 999px;
+      border: 1px solid #dadada;
+      background: #f8f8fa;
+      color: #555555;
+    }
+    .day-tab.active {
+      background: #ffe58f;
+      border-color: #f5c542;
+      color: #111111;
+      font-weight: 600;
+    }
+    .day-content {
+      display: none;
+    }
+    .day-content.active {
+      display: block;
+    }
+    .section-title {
+      font-size: calc(14px * var(--font-scale));
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #333333;
+    }
+    .section-sub {
+      font-size: calc(11px * var(--font-scale));
+      color: #777777;
+      margin-bottom: 8px;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 8px;
+      border-radius: 12px;
+      background: #ffffff;
+      margin-bottom: 6px;
+      border: 1px solid #e5e5ea;
+    }
+    .timeline-item.clickable {
+      cursor: pointer;
+    }
+    .time {
+      width: 70px;
+      font-size: calc(13px * var(--font-scale));
+      color: #666666;
+      font-variant-numeric: tabular-nums;
+    }
+    .icon {
+      width: 22px;
+      font-size: calc(20px * var(--font-scale));
+      line-height: 22px;
+    }
+    .content {
+      flex: 1;
+    }
+    .content-title {
+      font-size: calc(14px * var(--font-scale));
+      margin-bottom: 2px;
+    }
+    .content-note {
+      font-size: calc(11px * var(--font-scale));
+      color: #777777;
+    }
+    .footer-note {
+      margin-top: 18px;
+      font-size: calc(10px * var(--font-scale));
+      color: #999999;
+      text-align: center;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal {
+      width: 90%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 16px 12px 16px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.3);
+    }
+    .modal-img-wrapper {
+      margin: -2px 0 8px 0;
+    }
+    .modal-img-wrapper img {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      will-change: opacity, transform;
+    }
+    .modal-img-wrapper img.fade-out {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    .modal-img-wrapper img.fade-in {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .modal-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 4px 0 4px 0;
+    }
+    .modal-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #d0d0d4;
+    }
+    .modal-dot.active {
+      background: #111111;
+    }
+    .modal-title {
+      font-size: calc(15px * var(--font-scale));
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .modal-time {
+      font-size: calc(12px * var(--font-scale));
+      color: #777777;
+      margin-bottom: 8px;
+    }
+    .modal-body {
+      font-size: calc(13px * var(--font-scale));
+      color: #444444;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-link-btn {
+      flex: 1;
+      text-align: center;
+      padding: 7px 0;
+      border-radius: 999px;
+      border: none;
+      background: #111111;
+      color: #ffffff;
+      font-size: calc(12px * var(--font-scale));
+    }
+    .modal-close-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid #dddddd;
+      background: #f9f9fb;
+      font-size: calc(12px * var(--font-scale));
+    }
+  
+    /* Bottom sheet tabs */
+    .container {
+      padding-bottom: 86px; /* leave room for bottom tabs */
+    }
+    /* Snacks list */
+    .snack-item .time {
+      width: 0;
+      display: none;
+    }
+    .snack-item {
+      padding: 10px 10px;
+    }
+
+  
+/* Bottom sheet tabs - Excel style */
+    .container {
+      padding-bottom: 150px; /* leave room for floating tabs */
+    }
+    .bottom-tab:active {
+      transform: translateY(1px);
+    }
+    /* Optional baseline like a sheet edge */
+    /* Bottom band to anchor Excel-like tabs and prevent content overlap */
+    .container {
+      padding-bottom: 170px; /* room for band + tabs */
+    }
+    /* remove old baseline if any */
+    /* Full-width sheet tabs aligned to container width */
+    /* iOS style bottom toolbar */
+    .container {
+      padding-bottom: 220px; /* prevent content being covered by bottom toolbar */
+    }
+
+    .bottom-band {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: calc(env(safe-area-inset-bottom) + 38px); /* about 1cm above bottom */
+      height: 78px;
+      background: rgba(245,245,247,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(207,207,214,0.9);
+      box-shadow: 0 -10px 24px rgba(15,23,42,0.14);
+      z-index: 1190;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .bottom-tabs {
+      width: calc(100% - 24px);
+      max-width: 720px; /* align to main content width */
+      margin: 0 auto;
+      padding: 14px 0 0 0;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      pointer-events: auto;
+    }
+
+    .bottom-tab {
+      flex: 1;
+      min-width: 0;
+      height: 52px;
+      border: 1px solid rgba(200,200,205,0.9);
+      background: rgba(255,255,255,0.78);
+      color: #111111;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: 18px;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.10);
+    }
+
+    .bottom-tab.active {
+      background: rgba(17,17,17,0.88);
+      color: #ffffff;
+      border-color: rgba(17,17,17,0.88);
+      box-shadow: 0 12px 22px rgba(15,23,42,0.18);
+    }
+
+    .bottom-tab:active {
+      transform: translateY(1px);
+    }
+  /* Bottom toolbar flush to bottom */
+    .bottom-band {
+      bottom: 0;
+      height: calc(78px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  /* Raise toolbar top to mid of buttons */
+    .bottom-band {
+      height: calc(52px / 2 + 52px + env(safe-area-inset-bottom));
+      padding-top: calc(52px / 2);
+    }
+
+    .bottom-tabs {
+      transform: translateY(calc(-52px / 2));
+    }
+  /* Floating action button + pop menu */
+    .container {
+      padding-bottom: 32px; /* no bottom toolbar now */
+    }
+    .fab-wrap {
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 1400;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .fab {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      border: 1px solid rgba(200,200,205,0.9);
+      background: rgba(245,245,247,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 12px 24px rgba(15,23,42,0.18);
+      font-size: 18px;
+      font-weight: 800;
+      color: #111111;
+    }
+    .fab:active { transform: translateY(1px); }
+
+    .fab-menu {
+      display: none;
+      min-width: 160px;
+      padding: 10px;
+      border-radius: 18px;
+      border: 1px solid rgba(200,200,205,0.9);
+      background: rgba(245,245,247,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 16px 30px rgba(15,23,42,0.20);
+    }
+    .fab-menu.open { display: flex; flex-direction: column; gap: 8px; }
+
+    .fab-item {
+      width: 100%;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(200,200,205,0.9);
+      background: rgba(255,255,255,0.78);
+      font-size: 14px;
+      font-weight: 700;
+      color: #111111;
+    }
+    .fab-item.active {
+      background: rgba(17,17,17,0.88);
+      color: #ffffff;
+      border-color: rgba(17,17,17,0.88);
+    }
+  /* Smaller cut-edge FAB */
+    .fab {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      font-size: 16px;
+      box-shadow: 0 8px 16px rgba(15,23,42,0.14);
+    }
+
+    .fab-menu {
+      min-width: 120px;
+      padding: 8px;
+      border-radius: 14px;
+    }
+
+    .fab-item {
+      height: 36px;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+  /* Perfect circular FAB */
+    .fab {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      padding: 0;
+      font-size: 16px;
+    }
+  /* Circular menu buttons inside FAB */
+    .fab-menu {
+      min-width: auto;
+      padding: 8px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .fab-item {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+  /* Ensure FAB menu hidden by default */
+    .fab-menu {
+      display: none;
+    }
+    .fab-menu.open {
+      display: flex;
+    }
+  
+    /* FAB icon: use emoji ⚙️, perfectly centered */
+    .fab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-size: 18px;
+    }
+    .fab-emoji {
+      display: block;
+      transform: translateY(0);
+    }
+
+  </style>
+<link rel="apple-touch-icon" href="assets/icon/trip_icon.png" />
+  <link rel="icon" type="image/png" href="assets/icon/trip_icon.png" />
+</head>
+<body>
+  <div class="bg-fixed"></div>
+  
+  <div class="scroll-shell" id="scroll-shell">
+    <div class="container">
+    <div id="pull-indicator" class="pull-indicator">下拉更新行程</div>
+
+    <div class="header">
+      <div class="header-top">
+        <div>
+          <div class="header-title-small" id="header-title-small">My Trip</div>
+          <div class="header-title-main" id="header-title-main">東京九日八夜</div>
+        </div>
+        <div class="header-right">
+          <div id="today-chip" class="today-chip">載入行程中…</div>
+          <div class="font-controls" aria-label="Font size controls">
+            <button class="font-btn" id="font-smaller" type="button" aria-label="Smaller text">A−</button>
+            <button class="font-btn" id="font-larger" type="button" aria-label="Larger text">A+</button>
+            <button class="refresh-btn" id="refresh-btn">⟳</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-sub-row">
+        <div class="header-sub-text" id="header-sub">
+          旅程日期  2月14日 至 2月22日<br/>
+          去程 CX524  香港 至 東京  06:30 抵達<br/>
+          回程 CX501  東京 至 香港  21:30 起飛
+        </div>
+        <div class="status-square" id="status-square">
+          <div class="status-main" id="status-main">距離出發尚餘 30 日</div>
+          <div class="status-sub" id="status-sub">以日本時間計算</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="trip-row trip-row-with-logo">
+        <div class="trip-col">
+          <div class="trip-col-title">去程</div>
+          <div class="trip-col-main" id="outbound-main">2月14日  CX524</div>
+          <div class="trip-col-sub" id="outbound-sub">香港 至 東京  06:30 抵達</div>
+        </div>
+        <div class="trip-logo-col">
+          <img src="assets/icon/cx_logo.png" alt="Airline logo" class="trip-logo-img" />
+        </div>
+        <div class="trip-col trip-col-right">
+          <div class="trip-col-title">回程</div>
+          <div class="trip-col-main" id="inbound-main">2月22日  CX501</div>
+          <div class="trip-col-sub" id="inbound-sub">東京 至 香港  21:30 起飛</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="weather-header">
+        <div class="weather-title">東京天氣（自動更新）</div>
+        <div class="weather-updated" id="weather-updated">載入中…</div>
+      </div>
+      <div class="weather-today" id="weather-today">正在取得今日天氣…</div>
+      <div class="weather-sun" id="weather-sun">正在取得日出日落時間…</div>
+      <div class="weather-days" id="weather-days"></div>
+    </div>
+
+    <div id="itinerary-view">
+<div class="day-tabs" id="day-tabs"></div>
+
+    <div id="day-contents"></div>
+</div>
+
+<div id="snacks-view" style="display:none;">
+  <div class="card">
+    <div class="weather-header">
+      <div class="weather-title">小食清單</div>
+      <div class="weather-updated" id="snacks-count"></div>
+    </div>
+    <div class="section-sub" style="margin-bottom:10px;">路過即食  不設時間  點擊可開啟地圖</div>
+    <div id="snacks-list"></div>
+  </div>
+</div>
+
+    <div class="footer-note" id="footer-note">
+      行程  天氣  日出日落  照片及地圖由 AI 協助整合  點擊酒店及景點可查看詳細資訊
+    </div>
+  </div>
+  
+    
+    <div class="fab-wrap" aria-label="快速切換">
+      <button class="fab" id="fab-toggle" type="button" aria-expanded="false" aria-controls="fab-menu"><span class="fab-emoji" aria-hidden="true">⚙️</span></button>
+      <div class="fab-menu" id="fab-menu" role="menu" aria-hidden="true">
+        <button class="fab-item active" id="bt-itinerary" type="button" role="menuitem">🗓️</button>
+        <button class="fab-item" id="bt-snacks" type="button" role="menuitem">🍡</button>
+      </div>
+    </div>
+
+</div>
+</div>
+
+  <div class="modal-backdrop" id="detail-backdrop">
+    <div class="modal">
+      <div class="modal-img-wrapper" id="detail-img-wrapper" style="display:none;">
+        <img id="detail-img" src="" alt="photo" />
+        <div class="modal-dots" id="detail-dots" style="display:none;"></div>
+      </div>
+      <div class="modal-title" id="detail-title">標題</div>
+      <div class="modal-time" id="detail-time">時間</div>
+      <div class="modal-body" id="detail-body">詳細內容</div>
+      <div class="modal-actions">
+        <button class="modal-link-btn" id="detail-dianping-btn" style="display:none;">在官方網頁開啟</button>
+        <button class="modal-link-btn" id="detail-booking-btn" style="display:none;">查看預訂 PDF</button>
+        <button class="modal-link-btn" id="detail-maps-btn">在Google地圖開啟</button>
+        <button class="modal-close-btn" id="detail-close">關閉</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Refresh button
+    const refreshBtn = document.getElementById("refresh-btn");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => {
+        window.location.reload(true);
+      });
+    }
+
+
+    // Font size controls (A- / A+)
+    const FONT_MIN = 0.85;
+    const FONT_MAX = 1.30;
+    const FONT_STEP = 0.08;
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function applyFontScale(scale) {
+      const s = clamp(scale, FONT_MIN, FONT_MAX);
+      document.documentElement.style.setProperty("--font-scale", String(s));
+      try {
+        localStorage.setItem("trip_font_scale", String(s));
+      } catch (e) {}
+      return s;
+    }
+
+    function getSavedFontScale() {
+      try {
+        const v = parseFloat(localStorage.getItem("trip_font_scale") || "");
+        if (!isNaN(v)) return v;
+      } catch (e) {}
+      return 1;
+    }
+
+    let currentFontScale = applyFontScale(getSavedFontScale());
+
+    const fontSmallerBtn = document.getElementById("font-smaller");
+    const fontLargerBtn = document.getElementById("font-larger");
+
+    if (fontSmallerBtn) {
+      fontSmallerBtn.addEventListener("click", () => {
+        currentFontScale = applyFontScale(currentFontScale - FONT_STEP);
+      });
+    }
+    if (fontLargerBtn) {
+      fontLargerBtn.addEventListener("click", () => {
+        currentFontScale = applyFontScale(currentFontScale + FONT_STEP);
+      });
+    }
+
+    // Pull to refresh (scroll container)
+    const scrollShell = document.getElementById("scroll-shell");
+    const pullIndicator = document.getElementById("pull-indicator");
+    let pullStartY = 0;
+    let pullDistance = 0;
+    let isPulling = false;
+    const PULL_THRESHOLD = 70;
+
+    function getScrollTop() {
+      return scrollShell ? scrollShell.scrollTop : (window.scrollY || 0);
+    }
+
+    const touchTarget = scrollShell || window;
+
+    touchTarget.addEventListener("touchstart", (e) => {
+      if (getScrollTop() === 0) {
+        isPulling = true;
+        pullStartY = e.touches[0].clientY;
+        pullDistance = 0;
+      } else {
+        isPulling = false;
+      }
+    }, { passive: true });
+
+    touchTarget.addEventListener("touchmove", (e) => {
+      if (!isPulling) return;
+      const currentY = e.touches[0].clientY;
+      pullDistance = currentY - pullStartY;
+      if (pullDistance > 0 && pullIndicator) {
+        pullIndicator.classList.add("show");
+        pullIndicator.textContent = pullDistance > PULL_THRESHOLD ? "釋放以更新行程" : "下拉更新行程";
+      }
+    }, { passive: true });
+
+    touchTarget.addEventListener("touchend", () => {
+      if (!isPulling) return;
+      if (pullDistance > PULL_THRESHOLD) {
+        window.location.reload(true);
+      } else if (pullIndicator) {
+        pullIndicator.classList.remove("show");
+      }
+      isPulling = false;
+      pullDistance = 0;
+    }, { passive: true });
+
+    // Weather + Sunrise/Sunset
+    const weatherTodayEl = document.getElementById("weather-today");
+    const weatherSunEl = document.getElementById("weather-sun");
+    const weatherDaysEl = document.getElementById("weather-days");
+    const weatherUpdatedEl = document.getElementById("weather-updated");
+
+    const latitude = 35.68;
+    const longitude = 139.76;
+
+    const weatherUrl =
+      "https://api.open-meteo.com/v1/forecast?latitude=" +
+      latitude +
+      "&longitude=" +
+      longitude +
+      "&timezone=Asia%2FTokyo&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset";
+
+    // 新增：把 weathercode 轉做 icon 同描述
+    function getWeatherInfo(code) {
+      if (typeof code !== "number") {
+        return { icon: "☁️", label: "多雲" };
+      }
+      if (code === 0) return { icon: "☀️", label: "晴朗" };
+      if (code === 1) return { icon: "🌤️", label: "大致天晴" };
+      if (code === 2) return { icon: "⛅", label: "間有雲" };
+      if (code === 3) return { icon: "☁️", label: "多雲" };
+      if (code === 45 || code === 48) return { icon: "🌫️", label: "有霧" };
+      if ([51, 53, 55, 56, 57].includes(code)) return { icon: "🌦️", label: "毛毛雨" };
+      if ([61, 63, 65].includes(code)) return { icon: "🌧️", label: "有雨" };
+      if ([66, 67].includes(code)) return { icon: "🌧️", label: "凍雨" };
+      if ([71, 73, 75].includes(code)) return { icon: "❄️", label: "下雪" };
+      if (code === 77) return { icon: "🌨️", label: "雪粒" };
+      if ([80, 81, 82].includes(code)) return { icon: "🌧️", label: "驟雨" };
+      if (code === 95) return { icon: "⛈️", label: "雷暴" };
+      if ([96, 99].includes(code)) return { icon: "⛈️", label: "雷暴伴冰雹" };
+      return { icon: "☁️", label: "多雲" };
+    }
+
+    fetch(weatherUrl)
+      .then(r => r.json())
+      .then(data => {
+        if (!data.daily) {
+          weatherTodayEl.textContent = "暫時無法取得天氣資料";
+          weatherSunEl.textContent = "";
+          weatherUpdatedEl.textContent = "";
+          return;
+        }
+
+        const dates = data.daily.time;
+        const maxTemps = data.daily.temperature_2m_max;
+        const minTemps = data.daily.temperature_2m_min;
+        const sunrise = data.daily.sunrise;
+        const sunset = data.daily.sunset;
+        const weatherCodes = data.daily.weathercode || [];
+
+        const todayMax = Math.round(maxTemps[0]);
+        const todayMin = Math.round(minTemps[0]);
+        const todayDate = dates[0].split("-").slice(1).join("/");
+        const todayCode = weatherCodes[0];
+        const todayInfo = getWeatherInfo(todayCode);
+
+        weatherTodayEl.textContent =
+          "今日（" +
+          todayDate +
+          "）  " +
+          todayInfo.icon +
+          " " +
+          todayInfo.label +
+          "  高 " +
+          todayMax +
+          "°C  低 " +
+          todayMin +
+          "°C";
+
+        const srTime = new Date(sunrise[0]).toTimeString().slice(0, 5);
+        const ssTime = new Date(sunset[0]).toTimeString().slice(0, 5);
+        weatherSunEl.textContent = "日出 " + srTime + "  日落 " + ssTime;
+
+        const now = new Date();
+        weatherUpdatedEl.textContent =
+          "更新時間 " +
+          now.getHours().toString().padStart(2, "0") +
+          ":" +
+          now.getMinutes().toString().padStart(2, "0");
+
+        const tripDates = ["02/14","02/15","02/16","02/17","02/18","02/19","02/20","02/21","02/22"];
+        weatherDaysEl.innerHTML = "";
+
+        dates.forEach((d, i) => {
+          const label = d.split("-").slice(1).join("/");
+          if (!tripDates.includes(label)) return;
+
+          const card = document.createElement("div");
+          card.className = "weather-day";
+
+          const lbl = document.createElement("div");
+          lbl.className = "weather-day-label";
+          lbl.textContent = label;
+
+          const cond = document.createElement("div");
+          cond.className = "weather-cond";
+          const info = getWeatherInfo(weatherCodes[i]);
+          cond.textContent = info.icon + " " + info.label;
+
+          const temp = document.createElement("div");
+          temp.className = "weather-temp";
+          temp.textContent =
+            "高 " +
+            Math.round(maxTemps[i]) +
+            "°  低 " +
+            Math.round(minTemps[i]) +
+            "°";
+
+          card.appendChild(lbl);
+          card.appendChild(cond);
+          card.appendChild(temp);
+          weatherDaysEl.appendChild(card);
+        });
+
+        if (!weatherDaysEl.hasChildNodes()) {
+          const info = document.createElement("div");
+          info.style.fontSize = "11px";
+          info.style.color = "#777777";
+          info.textContent = "預報暫未覆蓋行程日期  開行程前幾日再查看。";
+          weatherDaysEl.appendChild(info);
+        }
+      })
+      .catch(() => {
+        weatherTodayEl.textContent = "暫時無法連線到天氣服務";
+        weatherSunEl.textContent = "";
+        weatherUpdatedEl.textContent = "";
+      });
+
+    // Modal with gallery + Google Maps
+    const detailBackdrop = document.getElementById("detail-backdrop");
+    const detailTitle = document.getElementById("detail-title");
+    const detailTime = document.getElementById("detail-time");
+    const detailBody = document.getElementById("detail-body");
+    const detailClose = document.getElementById("detail-close");
+    const detailMapsBtn = document.getElementById("detail-maps-btn");
+    const detailBookingBtn = document.getElementById("detail-booking-btn");
+    const detailImgWrapper = document.getElementById("detail-img-wrapper");
+    const detailImg = document.getElementById("detail-img");
+    const detailDots = document.getElementById("detail-dots");
+    const detailDianpingBtn = document.getElementById("detail-dianping-btn");
+
+
+    let bodyScrollY = 0;
+
+    function lockBodyScroll() {
+      if (!scrollShell) return;
+      bodyScrollY = scrollShell.scrollTop || 0;
+      scrollShell.style.overflowY = "hidden";
+    }
+
+    function unlockBodyScroll() {
+      if (!scrollShell) return;
+      scrollShell.style.overflowY = "auto";
+      scrollShell.scrollTop = bodyScrollY || 0;
+    }
+
+const GALLERIES = {
+      "currysoup": [
+        "assets/galleries/currysoup/currysoup.jpg"
+      ],
+      "parfait": [
+        "assets/galleries/parfait/parfait.jpg"
+      ],
+      "nemuro": [
+        "assets/galleries/nemuro/nemuro.jpg"
+      ],
+      "mystay": [
+        "assets/galleries/mystay/mystay.jpg"
+      ],
+     "christmasmarket": [
+        "assets/galleries/christmasmarket/christmasmarket01.webp",
+        "assets/galleries/christmasmarket/christmasmarket02.webp"
+      ],
+     "kanihon": [
+        "assets/galleries/kanihon/kanihon.jpg"
+      ],
+     "takarasushi": [
+        "assets/galleries/takarasushi/takarasushi01.jpg"
+      ],
+     "outlet": [
+        "assets/galleries/outlet/outlet01.webp"
+      ],
+     "noodles": [
+        "assets/galleries/noodles/noodles.jpg",
+        "assets/galleries/noodles/noodles02.png"
+      ],
+     "bbq": [
+        "assets/galleries/bbq/bbq.jpg",
+        "assets/galleries/bbq/bbq02.jpg",
+        "assets/galleries/bbq/bbq03.jpg"
+      ],
+     "oyster": [
+        "assets/galleries/oyster/oyster01.png",
+        "assets/galleries/oyster/oyster02.png"
+      ],
+     "unicafe": [
+        "assets/galleries/unicafe/unicafe.jpg",
+        "assets/galleries/unicafe/unicafe01.jpg",
+        "assets/galleries/unicafe/unicafe02.jpg"
+      ]
+    };
+
+    let currentMapsUrl = "";
+    let currentDianpingUrl = "";
+    let currentBookingUrl = "";
+    let currentGallery = [];
+    let currentGalleryIndex = 0;
+
+    function renderDots() {
+      detailDots.innerHTML = "";
+      currentGallery.forEach((_, idx) => {
+        const dot = document.createElement("div");
+        dot.className = "modal-dot" + (idx === currentGalleryIndex ? " active" : "");
+        dot.addEventListener("click", () => {
+          currentGalleryIndex = idx;
+          updateGalleryImage();
+        });
+        detailDots.appendChild(dot);
+      });
+    }
+
+    function updateGalleryImage() {
+      if (!currentGallery.length) return;
+      // 先做淡出
+      detailImg.classList.remove("fade-in");
+      detailImg.classList.add("fade-out");
+      setTimeout(() => {
+        detailImg.src = currentGallery[currentGalleryIndex];
+        renderDots();
+        // 再淡入
+        detailImg.classList.remove("fade-out");
+        detailImg.classList.add("fade-in");
+        setTimeout(() => {
+          detailImg.classList.remove("fade-in");
+        }, 220);
+      }, 120);
+    }
+
+    function setupTimelineClickHandlers() {
+      document.querySelectorAll(".timeline-item.clickable").forEach(item => {
+        item.addEventListener("click", () => {
+          const title = item.getAttribute("data-title") || "";
+          const time = item.getAttribute("data-time") || "";
+          const detail = item.getAttribute("data-detail") || "";
+          const detailLinesRaw = item.getAttribute("data-detail-lines");
+          const maps = item.getAttribute("data-maps") || "";
+          const galleryKey = item.getAttribute("data-gallery") || "";
+          const dianping = item.getAttribute("data-dianping") || "";
+          const bookingGalleryKey = item.getAttribute("data-booking-gallery") || "";
+          const bookingPdf = item.getAttribute("data-booking-pdf") || "";
+
+          detailTitle.textContent = title;
+          detailTime.textContent = time;
+          if (detailLinesRaw) {
+            try {
+              const lines = JSON.parse(detailLinesRaw);
+              detailBody.innerHTML = lines.map(line => `<div>${line}</div>`).join("");
+            } catch (e) {
+              detailBody.textContent = detail;
+            }
+          } else {
+            detailBody.textContent = detail;
+          }
+          currentMapsUrl = maps;
+          currentDianpingUrl = dianping;
+          currentBookingUrl = bookingPdf;
+          detailBackdrop.classList.add("active");
+          lockBodyScroll();
+
+          let combinedGallery = [];
+          if (galleryKey && GALLERIES[galleryKey]) {
+            combinedGallery = combinedGallery.concat(GALLERIES[galleryKey]);
+          }
+          if (bookingGalleryKey && GALLERIES[bookingGalleryKey]) {
+            combinedGallery = combinedGallery.concat(GALLERIES[bookingGalleryKey]);
+          }
+
+          if (combinedGallery.length) {
+            currentGallery = combinedGallery.slice();
+            currentGalleryIndex = 0;
+            detailImgWrapper.style.display = "block";
+            detailDots.style.display = "flex";
+            updateGalleryImage();
+          } else {
+            currentGallery = [];
+            detailImgWrapper.style.display = "none";
+            detailDots.style.display = "none";
+            detailImg.src = "";
+          }
+
+          // Google地圖按鈕
+          if (!maps) {
+            detailMapsBtn.style.display = "none";
+          } else {
+            detailMapsBtn.style.display = "inline-block";
+          }
+
+          // 大眾點評按鈕
+          if (!dianping) {
+            detailDianpingBtn.style.display = "none";
+          } else {
+            detailDianpingBtn.style.display = "inline-block";
+          }
+
+          // PDF按鈕
+          if (!bookingPdf) {
+            detailBookingBtn.style.display = "none";
+          } else {
+            detailBookingBtn.style.display = "inline-block";
+          }
+        });
+      });
+    }
+
+    // Swipe 支援：在圖片區左／右掃切換上一張／下一張
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    const SWIPE_THRESHOLD = 40; // 最少橫向移動距離
+
+    if (detailImgWrapper) {
+      detailImgWrapper.addEventListener("touchstart", (e) => {
+        if (!e.touches || !e.touches.length) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchEndX = touchStartX;
+        touchEndY = touchStartY;
+      }, { passive: true });
+
+      detailImgWrapper.addEventListener("touchmove", (e) => {
+        if (!e.touches || !e.touches.length) return;
+        touchEndX = e.touches[0].clientX;
+        touchEndY = e.touches[0].clientY;
+      }, { passive: true });
+
+      detailImgWrapper.addEventListener("touchend", () => {
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // 主要係橫向 swipe 先觸發
+        if (Math.abs(diffX) < SWIPE_THRESHOLD || Math.abs(diffX) <= Math.abs(diffY)) {
+          return;
+        }
+
+        if (!currentGallery || !currentGallery.length) return;
+
+        if (diffX < 0) {
+          // 向左掃：下一張
+          currentGalleryIndex = (currentGalleryIndex + 1) % currentGallery.length;
+        } else {
+          // 向右掃：上一張
+          currentGalleryIndex = (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
+        }
+        updateGalleryImage();
+      });
+    }
+
+    // 點一下圖片：左半上一張 右半下一張
+    detailImg.addEventListener("click", (e) => {
+      if (!currentGallery || !currentGallery.length) return;
+
+      const rect = detailImg.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const half = rect.width / 2;
+
+      if (clickX < half) {
+        // 左半點一下 → 上一張
+        currentGalleryIndex =
+          (currentGalleryIndex - 1 + currentGallery.length) % currentGallery.length;
+      } else {
+        // 右半點一下 → 下一張
+        currentGalleryIndex =
+          (currentGalleryIndex + 1) % currentGallery.length;
+      }
+
+      updateGalleryImage();
+    });
+
+    detailClose.addEventListener("click", () => {
+      detailBackdrop.classList.remove("active");
+      unlockBodyScroll();
+    });
+
+    detailBackdrop.addEventListener("click", e => {
+      if (e.target === detailBackdrop) {
+        detailBackdrop.classList.remove("active");
+        unlockBodyScroll();
+      }
+    });
+    // 阻止在打開相片時整個頁面跟住滑動
+    detailBackdrop.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+
+    detailMapsBtn.addEventListener("click", () => {
+      if (currentMapsUrl) {
+        window.open(currentMapsUrl, "_blank");
+      }
+    });
+
+    detailDianpingBtn.addEventListener("click", () => {
+     if (currentDianpingUrl) {
+       window.open(currentDianpingUrl, "_blank");
+   }
+   });
+
+    detailBookingBtn.addEventListener("click", () => {
+      if (currentBookingUrl) {
+        window.open(currentBookingUrl, "_blank");
+      }
+    });
+
+    // Tokyo date helper
+function getTokyoDateString() {
+  const now = new Date();
+  const offsetMinutes = 9 * 60 + now.getTimezoneOffset();
+  const jst = new Date(now.getTime() + offsetMinutes * 60000);
+  const y = jst.getFullYear();
+  const m = String(jst.getMonth() + 1).padStart(2, "0");
+  const d = String(jst.getDate()).padStart(2, "0");
+  return y + "-" + m + "-" + d;
+}
+
+    function updateTodayChipAndStatus(data) {
+      const chip = document.getElementById("today-chip");
+      const statusSquare = document.getElementById("status-square");
+      const statusMain = document.getElementById("status-main");
+      const statusSub = document.getElementById("status-sub");
+      if (!data.days || !data.days.length || !chip || !statusSquare) return;
+
+      const todayIso = getTokyoDateString();
+      const startIso = data.meta && data.meta.tripStartIso;
+      const endIso = data.meta && data.meta.tripEndIso;
+
+      let todayIndex = -1;
+      data.days.forEach((day, idx) => {
+        if (day.isoDate === todayIso) todayIndex = idx;
+      });
+
+      function diffInDays(a, b) {
+        const da = new Date(a);
+        const db = new Date(b);
+        return Math.round((db - da) / 86400000);
+      }
+
+      function hideSquare() {
+        statusSquare.style.display = "none";
+      }
+      function showSquare(main, sub) {
+        statusSquare.style.display = "flex";
+        if (statusMain) statusMain.textContent = main;
+        if (statusSub) statusSub.textContent = sub || "";
+      }
+
+      if (todayIndex >= 0) {
+        const day = data.days[todayIndex];
+        chip.textContent = "今日  Day " + (todayIndex + 1) + "（" + day.date + "）";
+        chip.classList.add("active");
+        hideSquare();
+
+      const tabs = document.querySelectorAll(".day-tab");
+        const dayContents = document.querySelectorAll(".day-content");
+        tabs.forEach(t => t.classList.remove("active"));
+        dayContents.forEach(d => d.classList.remove("active"));
+
+        const activeTab = document.querySelector('.day-tab[data-day-index="' + todayIndex + '"]');
+        const activeContent = document.querySelector('.day-content[data-day-index="' + todayIndex + '"]');
+        if (activeTab) activeTab.classList.add("active");
+        if (activeContent) activeContent.classList.add("active");
+
+        if (scrollShell) { scrollShell.scrollTo({ top: 0, behavior: "smooth" }); } else { window.scrollTo({ top: 0, behavior: "smooth" }); }
+      } else if (startIso && todayIso < startIso) {
+        const daysToGo = diffInDays(todayIso, startIso);
+        chip.textContent = "尚未出發";
+        chip.classList.remove("active");
+        showSquare("距離出發尚餘 " + daysToGo + " 日", "以日本時間計算");
+      } else if (endIso && todayIso > endIso) {
+        chip.textContent = "行程已完成";
+        chip.classList.remove("active");
+        showSquare("行程已完成", "多謝自己好好玩返轉");
+      } else {
+        chip.textContent = "行程日期以外";
+        chip.classList.remove("active");
+        showSquare("不在行程日期內", "請確認行程日期設定");
+      }
+    }
+
+    function renderFromTripJson(data) {
+      const headerSmall = document.getElementById("header-title-small");
+      const headerMain = document.getElementById("header-title-main");
+      const headerSub = document.getElementById("header-sub");
+      const outboundMain = document.getElementById("outbound-main");
+      const outboundSub = document.getElementById("outbound-sub");
+      const inboundMain = document.getElementById("inbound-main");
+      const inboundSub = document.getElementById("inbound-sub");
+      const footerNote = document.getElementById("footer-note");
+
+      if (data.meta) {
+        if (data.meta.titleSmall && headerSmall) headerSmall.textContent = data.meta.titleSmall;
+        if (data.meta.titleMain && headerMain) headerMain.textContent = data.meta.titleMain;
+        if (headerSub) {
+          const lines = [];
+          if (data.meta.dateRange) {
+            lines.push("旅程日期  " + data.meta.dateRange);
+          }
+          if (data.meta.outbound) {
+            lines.push("去程 " + data.meta.outbound.flight + "  " + data.meta.outbound.route + "  " + data.meta.outbound.time);
+          }
+          if (data.meta.inbound) {
+            lines.push("回程 " + data.meta.inbound.flight + "  " + data.meta.inbound.route + "  " + data.meta.inbound.time);
+          }
+          headerSub.innerHTML = lines.join("<br/>");
+        }
+        if (data.meta.outbound && outboundMain && outboundSub) {
+          outboundMain.textContent = data.meta.outbound.date + "  " + data.meta.outbound.flight;
+          outboundSub.textContent = data.meta.outbound.route + "  " + data.meta.outbound.time;
+        }
+        if (data.meta.inbound && inboundMain && inboundSub) {
+          inboundMain.textContent = data.meta.inbound.date + "  " + data.meta.inbound.flight;
+          inboundSub.textContent = data.meta.inbound.route + " " + data.meta.inbound.time;
+        }
+        if (data.meta.footerNote && footerNote) {
+          footerNote.textContent = data.meta.footerNote;
+        }
+      }
+
+      const tabsEl = document.getElementById("day-tabs");
+      const contentsEl = document.getElementById("day-contents");
+      tabsEl.innerHTML = "";
+      contentsEl.innerHTML = "";
+
+      if (!data.days || !data.days.length) return;
+
+      data.days.forEach((day, index) => {
+        const tab = document.createElement("button");
+        tab.className = "day-tab" + (index === 0 ? " active" : "");
+        tab.dataset.dayIndex = String(index);
+        tab.textContent = day.label || ("Day " + (index + 1));
+        tabsEl.appendChild(tab);
+
+        const content = document.createElement("div");
+        content.className = "day-content" + (index === 0 ? " active" : "");
+        content.dataset.dayIndex = String(index);
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "section-title";
+        titleEl.textContent = (day.date ? day.date + "  " : "") + (day.title || "");
+        content.appendChild(titleEl);
+
+        if (day.subtitle) {
+          const subEl = document.createElement("div");
+          subEl.className = "section-sub";
+          subEl.textContent = day.subtitle;
+          content.appendChild(subEl);
+        }
+
+        if (day.items && day.items.length) {
+          day.items.forEach(item => {
+            const itemEl = document.createElement("div");
+            itemEl.className = "timeline-item";
+            if (item.popup) {
+              itemEl.classList.add("clickable");
+              itemEl.setAttribute("data-title", item.title || "");
+              itemEl.setAttribute("data-time", item.time || "");
+              itemEl.setAttribute("data-detail", item.detail || "");
+              if (item.detailLines) {
+                itemEl.setAttribute("data-detail-lines", JSON.stringify(item.detailLines));
+              }
+              itemEl.setAttribute("data-maps", item.maps || "");
+              if (item.gallery) {
+                itemEl.setAttribute("data-gallery", item.gallery);
+              }
+              if (item.dianping) {
+               itemEl.setAttribute("data-dianping", item.dianping);
+              }
+              if (item.bookingGallery) {
+                itemEl.setAttribute("data-booking-gallery", item.bookingGallery);
+              }
+              if (item.bookingPdf) {
+                itemEl.setAttribute("data-booking-pdf", item.bookingPdf);
+              }
+            }
+
+            const timeEl = document.createElement("div");
+            timeEl.className = "time";
+            timeEl.textContent = item.time || "";
+
+            const iconEl = document.createElement("div");
+            iconEl.className = "icon";
+            iconEl.textContent = item.icon || "";
+
+            const contentWrap = document.createElement("div");
+            contentWrap.className = "content";
+
+            const contentTitle = document.createElement("div");
+            contentTitle.className = "content-title";
+            contentTitle.textContent = item.title || "";
+
+            const contentNote = document.createElement("div");
+            contentNote.className = "content-note";
+            contentNote.textContent = item.note || "";
+
+            contentWrap.appendChild(contentTitle);
+            if (item.note) contentWrap.appendChild(contentNote);
+
+            itemEl.appendChild(timeEl);
+            itemEl.appendChild(iconEl);
+            itemEl.appendChild(contentWrap);
+
+            content.appendChild(itemEl);
+          });
+        }
+contentsEl.appendChild(content);
+      });
+
+      const tabs = document.querySelectorAll(".day-tab");
+      const dayContents = document.querySelectorAll(".day-content");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          dayContents.forEach(d => d.classList.remove("active"));
+          tab.classList.add("active");
+          const idx = tab.dataset.dayIndex;
+          const activeContent = document.querySelector('.day-content[data-day-index="' + idx + '"]');
+          if (activeContent) activeContent.classList.add("active");
+          if (scrollShell) { scrollShell.scrollTo({ top: 0, behavior: "smooth" }); } else { window.scrollTo({ top: 0, behavior: "smooth" }); }
+        });
+      });
+
+      setupTimelineClickHandlers();
+      renderSnacks(data);
+      updateTodayChipAndStatus(data);
+    }
+
+    
+    // Bottom tabs: switch between itinerary and snacks
+    const btItinerary = document.getElementById("bt-itinerary");
+    const btSnacks = document.getElementById("bt-snacks");
+    const itineraryView = document.getElementById("itinerary-view");
+    const snacksView = document.getElementById("snacks-view");
+
+    function setBottomTab(active) {
+      // sync active state on menu buttons
+
+      if (!btItinerary || !btSnacks || !itineraryView || !snacksView) return;
+      if (active === "snacks") {
+        btItinerary.classList.remove("active");
+        btSnacks.classList.add("active");
+        itineraryView.style.display = "none";
+        snacksView.style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        btSnacks.classList.remove("active");
+        btItinerary.classList.add("active");
+        snacksView.style.display = "none";
+        itineraryView.style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    if (btItinerary) btItinerary.addEventListener("click", () => setBottomTab("itinerary"));
+    if (btSnacks) btSnacks.addEventListener("click", () => setBottomTab("snacks"));
+
+    // FAB menu toggle
+    const fabToggle = document.getElementById("fab-toggle");
+    const fabMenu = document.getElementById("fab-menu");
+
+    function closeFabMenu() {
+      if (!fabMenu || !fabToggle) return;
+      fabMenu.classList.remove("open");
+      fabMenu.setAttribute("aria-hidden", "true");
+      fabToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleFabMenu() {
+      if (!fabMenu || !fabToggle) return;
+      const isOpen = fabMenu.classList.toggle("open");
+      fabMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      fabToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    if (fabToggle) fabToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleFabMenu();
+    });
+
+    document.addEventListener("click", () => closeFabMenu(), { passive: true });
+    document.addEventListener("scroll", () => closeFabMenu(), { passive: true });
+
+    function renderSnacks(data) {
+      const listEl = document.getElementById("snacks-list");
+      const countEl = document.getElementById("snacks-count");
+      if (!listEl) return;
+
+      const snacks = (data && data.snacks && Array.isArray(data.snacks.items)) ? data.snacks.items : [];
+      if (countEl) countEl.textContent = snacks.length ? ("共 " + snacks.length + " 項") : "";
+
+      listEl.innerHTML = "";
+
+      if (!snacks.length) {
+        const empty = document.createElement("div");
+        empty.style.fontSize = "12px";
+        empty.style.color = "#777777";
+        empty.textContent = "未有小食清單  之後加入店名及地圖連結即可。";
+        listEl.appendChild(empty);
+        return;
+      }
+
+      snacks.forEach(s => {
+        const itemEl = document.createElement("div");
+        itemEl.className = "timeline-item snack-item" + (s.popup ? " clickable" : " clickable");
+        itemEl.setAttribute("data-title", s.title || "");
+        itemEl.setAttribute("data-time", (s.area ? s.area : "") + (s.category ? ("  " + s.category) : ""));
+        const detailLines = [];
+        if (s.must) detailLines.push("必點  " + s.must);
+        if (s.note) detailLines.push(s.note);
+        if (s.opening) detailLines.push("營業  " + s.opening);
+        itemEl.setAttribute("data-detail-lines", JSON.stringify(detailLines.length ? detailLines : ["點擊地圖前往"]));
+        itemEl.setAttribute("data-maps", s.maps || "");
+        if (s.gallery) itemEl.setAttribute("data-gallery", s.gallery);
+
+        const iconEl = document.createElement("div");
+        iconEl.className = "icon";
+        iconEl.textContent = "🍡";
+
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "content";
+
+        const contentTitle = document.createElement("div");
+        contentTitle.className = "content-title";
+        contentTitle.textContent = s.title || "";
+
+        const contentNote = document.createElement("div");
+        contentNote.className = "content-note";
+        contentNote.textContent = (s.area ? (s.area + "  ") : "") + (s.category || "");
+
+        contentWrap.appendChild(contentTitle);
+        if (contentNote.textContent) contentWrap.appendChild(contentNote);
+
+        itemEl.appendChild(iconEl);
+        itemEl.appendChild(contentWrap);
+
+        listEl.appendChild(itemEl);
+      });
+
+      // Reuse existing modal click handlers
+      setupTimelineClickHandlers();
+    }
+
+
+    fetch("trip_tokyo.json")
+      .then(r => r.json())
+      .then(data => {
+        renderFromTripJson(data);
+      })
+      .catch(() => {
+        const chip = document.getElementById("today-chip");
+        if (chip) chip.textContent = "無法載入行程資料";
+      });
+  </script>
+</body>
+</html>
+

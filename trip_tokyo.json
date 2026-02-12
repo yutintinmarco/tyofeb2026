@@ -1,0 +1,479 @@
+{
+  "meta": {
+    "titleSmall": "My Trip",
+    "titleMain": "東京九日八夜",
+    "dateRange": "2月14日 至 2月22日",
+    "outbound": {
+      "date": "2月14日",
+      "flight": "CX524",
+      "route": "香港 至 東京",
+      "time": "06:30 抵達"
+    },
+    "inbound": {
+      "date": "2月22日",
+      "flight": "CX501",
+      "route": "東京 至 香港",
+      "time": "21:30 起飛"
+    },
+    "footerNote": "行程  天氣  日出日落  照片及地圖由 AI 協助整合  點擊酒店及景點可查看詳細資訊",
+    "tripStartIso": "2026-02-14",
+    "tripEndIso": "2026-02-22"
+  },
+  "days": [
+    {
+      "label": "Day 1",
+      "date": "2月14日",
+      "title": "抵達東京  上野 秋葉原",
+      "subtitle": "CX524 抵達  鮨うめざわ  国立西洋美術館  秋葉原",
+      "isoDate": "2026-02-14",
+      "items": [
+        {
+          "time": "06:30",
+          "icon": "🛬",
+          "title": "CX524 抵達",
+          "note": "按實際流程過關取行李  建議預留 60–90 分鐘"
+        },
+        {
+          "time": "08:00",
+          "icon": "🧘",
+          "title": "休息",
+          "note": "酒店或附近補給"
+        },
+        {
+          "time": "11:00",
+          "icon": "🚇",
+          "title": "出門",
+          "note": "視乎酒店位置安排首段移動"
+        },
+        {
+          "time": "12:00",
+          "icon": "🍣",
+          "title": "鮨うめざわ",
+          "note": "已確認 12:00",
+          "popup": true,
+          "detail": "已確認 12:00 訂位  建議提早 10 分鐘到達",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E9%AE%A8%20%E3%81%86%E3%82%81%E3%81%96%E3%82%8F%20%E6%9D%B1%E4%BA%AC"
+        },
+        {
+          "time": "14:00",
+          "icon": "🖼️",
+          "title": "国立西洋美術館",
+          "note": "上野公園一帶",
+          "popup": true,
+          "detail": "上野公園一帶  留意閉館時間",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E5%9B%BD%E7%AB%8B%E8%A5%BF%E6%B4%8B%E7%BE%8E%E8%A1%93%E9%A4%A8"
+        },
+        {
+          "time": "17:00",
+          "icon": "🍽️",
+          "title": "Dinner",
+          "note": "按你當日狀態就近安排"
+        },
+        {
+          "time": "19:00",
+          "icon": "🎮",
+          "title": "秋葉原",
+          "note": "夜行補給  彈性時間",
+          "popup": true,
+          "detail": "夜晚氣氛好  逛街加補給",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E7%A7%8B%E8%91%89%E5%8E%9F"
+        }
+      ]
+    },
+    {
+      "label": "Day 2",
+      "date": "2月15日",
+      "title": "大宮  越後湯澤  清津峽",
+      "subtitle": "OMIYA  越後湯澤  清津峽  晚上赤羽",
+      "isoDate": "2026-02-15",
+      "items": [
+        {
+          "time": "08:13",
+          "icon": "🚄",
+          "title": "OMIYA → ECHIGO YUZAWA",
+          "note": "08:13 出發  09:05 到達"
+        },
+        {
+          "time": "09:50",
+          "icon": "🚌",
+          "title": "Bus → 清津峽",
+          "note": "09:50 Bus  建議確認回程班次",
+          "popup": true,
+          "detail": "09:50 Bus 前往清津峽  留意回程時間",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%B8%85%E6%B4%A5%E5%B3%A1%20%E6%B8%93%E8%B0%B7%E3%83%88%E3%83%B3%E3%83%8D%E3%83%AB"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍜",
+          "title": "Lunch",
+          "note": "越後湯澤站內或附近"
+        },
+        {
+          "time": "14:49",
+          "icon": "🚄",
+          "title": "ECHIGO YUZAWA → OMIYA",
+          "note": "14:49 出發  15:35 到達"
+        },
+        {
+          "time": "18:00",
+          "icon": "🍽️",
+          "title": "Dinner @ 赤羽",
+          "note": "行程後段放鬆",
+          "popup": true,
+          "detail": "赤羽覓食  之後可早啲休息",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E8%B5%A4%E7%BE%BD"
+        }
+      ]
+    },
+    {
+      "label": "Day 3",
+      "date": "2月16日",
+      "title": "河津一日遊  夜返新宿",
+      "subtitle": "TOKYO → KAWAZU  河津散策  夜返新宿  テルマー湯",
+      "isoDate": "2026-02-16",
+      "items": [
+        {
+          "time": "08:00",
+          "icon": "🧳",
+          "title": "出門準備",
+          "note": "輕裝  帶雨具以防萬一"
+        },
+        {
+          "time": "09:00",
+          "icon": "🚆",
+          "title": "TOKYO → KAWAZU",
+          "note": "09:00 出發  11:27 到達"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "河津附近"
+        },
+        {
+          "time": "14:00",
+          "icon": "🌸",
+          "title": "河津 散策",
+          "note": "按花況與人流調整",
+          "popup": true,
+          "detail": "河津一帶散策  如人多可分段走",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%B2%B3%E6%B4%A5%20%E6%A1%9C"
+        },
+        {
+          "time": "17:06",
+          "icon": "🚆",
+          "title": "KAWAZU → TOKYO",
+          "note": "17:06 出發  19:50 到達"
+        },
+        {
+          "time": "20:30",
+          "icon": "🛍️",
+          "title": "新宿",
+          "note": "夜晚補給或購物",
+          "popup": true,
+          "detail": "新宿範圍行街  視乎精神狀態",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E5%AE%BF"
+        },
+        {
+          "time": "21:00",
+          "icon": "♨️",
+          "title": "テルマー湯",
+          "note": "如想浸一浸放鬆",
+          "popup": true,
+          "detail": "入場費及最後入場時間以官方為準",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%86%E3%83%AB%E3%83%9E%E3%83%BC%E6%B9%AF"
+        }
+      ]
+    },
+    {
+      "label": "Day 4",
+      "date": "2月17日",
+      "title": "鎌倉  橫濱",
+      "subtitle": "鎌倉散策  橫濱黃昏  晚餐",
+      "isoDate": "2026-02-17",
+      "items": [
+        {
+          "time": "09:30",
+          "icon": "⛩️",
+          "title": "鎌倉",
+          "note": "早去避人潮",
+          "popup": true,
+          "detail": "鎌倉重點景點集中  減少走位",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E9%8E%8C%E5%80%89"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "鎌倉或移動途中"
+        },
+        {
+          "time": "15:00",
+          "icon": "🌆",
+          "title": "橫濱",
+          "note": "黃昏好影相",
+          "popup": true,
+          "detail": "港未來一帶或中華街視乎偏好",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%A8%AA%E6%B5%9C"
+        },
+        {
+          "time": "18:00",
+          "icon": "🍽️",
+          "title": "Dinner",
+          "note": "橫濱或返東京後再食"
+        }
+      ]
+    },
+    {
+      "label": "Day 5",
+      "date": "2月18日",
+      "title": "前往箱根",
+      "subtitle": "新宿 → 箱根湯本  箱根  酒店自助餐",
+      "isoDate": "2026-02-18",
+      "items": [
+        {
+          "time": "09:15",
+          "icon": "🧳",
+          "title": "整理行李",
+          "note": "退房或寄存行李"
+        },
+        {
+          "time": "10:00",
+          "icon": "🚆",
+          "title": "新宿 → 箱根湯本",
+          "note": "10:00 出發  11:27 到達"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "箱根湯本附近"
+        },
+        {
+          "time": "14:00",
+          "icon": "🏞️",
+          "title": "箱根",
+          "note": "按天氣安排景點",
+          "popup": true,
+          "detail": "箱根景點分散  建議集中強羅或湯本一帶",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E7%AE%B1%E6%A0%B9"
+        },
+        {
+          "time": "18:00",
+          "icon": "🍽️",
+          "title": "Hotel buffet",
+          "note": "酒店晚餐"
+        },
+        {
+          "time": "20:00",
+          "icon": "🏨",
+          "title": "Hotel",
+          "note": "早啲休息"
+        }
+      ]
+    },
+    {
+      "label": "Day 6",
+      "date": "2月19日",
+      "title": "御殿場 Outlet  新松田  秋葉原",
+      "subtitle": "Outlet  西平畑公園  肉屋横丁",
+      "isoDate": "2026-02-19",
+      "items": [
+        {
+          "time": "10:00",
+          "icon": "🛍️",
+          "title": "御殿場 Outlet",
+          "note": "購物時間容易超標  建議有清單",
+          "popup": true,
+          "detail": "Premium Outlets  建議設定離開時間",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E5%BE%A1%E6%AE%BF%E5%A0%B4%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0%E3%83%BB%E3%82%A2%E3%82%A6%E3%83%88%E3%83%AC%E3%83%83%E3%83%88"
+        },
+        {
+          "time": "15:00",
+          "icon": "🚆",
+          "title": "御殿場 → 新松田",
+          "note": "轉場"
+        },
+        {
+          "time": "16:00",
+          "icon": "🌅",
+          "title": "西平畑公園",
+          "note": "日落前更好",
+          "popup": true,
+          "detail": "視乎花況及光線  預留拍照時間",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E8%A5%BF%E5%B9%B3%E7%95%91%E5%85%AC%E5%9C%92"
+        },
+        {
+          "time": "18:00",
+          "icon": "🚆",
+          "title": "新松田 → 秋葉原",
+          "note": "返市區"
+        },
+        {
+          "time": "20:00",
+          "icon": "🍖",
+          "title": "肉屋横丁",
+          "note": "已確認 20:00",
+          "popup": true,
+          "detail": "已確認 20:00 訂位  建議準時到達",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E8%82%89%E5%B1%8B%E6%A8%AA%E4%B8%81%20%E7%A7%8B%E8%91%89%E5%8E%9F"
+        }
+      ]
+    },
+    {
+      "label": "Day 7",
+      "date": "2月20日",
+      "title": "上野  銀座  東京站",
+      "subtitle": "国立科学博物館  銀座  Tokyo Station",
+      "isoDate": "2026-02-20",
+      "items": [
+        {
+          "time": "10:00",
+          "icon": "🧪",
+          "title": "国立科学博物館",
+          "note": "上野  室內行程",
+          "popup": true,
+          "detail": "館內展區多  可預留 2–3 小時",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E5%9B%BD%E7%AB%8B%E7%A7%91%E5%AD%A6%E5%8D%9A%E7%89%A9%E9%A4%A8"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "上野或銀座"
+        },
+        {
+          "time": "14:30",
+          "icon": "🏙️",
+          "title": "銀座",
+          "note": "購物散策",
+          "popup": true,
+          "detail": "銀座範圍大  可按品牌清單行",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7"
+        },
+        {
+          "time": "18:00",
+          "icon": "🍽️",
+          "title": "Dinner",
+          "note": "銀座或東京站附近"
+        },
+        {
+          "time": "20:00",
+          "icon": "🚉",
+          "title": "Tokyo Station",
+          "note": "夜景  便利買手信",
+          "popup": true,
+          "detail": "東京站一帶  丸之內夜景",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E4%BA%AC%E9%A7%85"
+        }
+      ]
+    },
+    {
+      "label": "Day 8",
+      "date": "2月21日",
+      "title": "豪德寺  吉祥寺  澀谷  新宿",
+      "subtitle": "豪德寺  吉祥寺  澀谷  新宿",
+      "isoDate": "2026-02-21",
+      "items": [
+        {
+          "time": "08:00",
+          "icon": "🐱",
+          "title": "豪徳寺",
+          "note": "08:00 open",
+          "popup": true,
+          "detail": "招き猫寺  早去人少",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E8%B1%AA%E5%BE%B3%E5%AF%BA"
+        },
+        {
+          "time": "11:00",
+          "icon": "🌳",
+          "title": "吉祥寺",
+          "note": "散策  井之頭公園",
+          "popup": true,
+          "detail": "吉祥寺一帶  氣氛好",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E5%90%89%E7%A5%A5%E5%AF%BA"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "吉祥寺"
+        },
+        {
+          "time": "15:00",
+          "icon": "🕺",
+          "title": "渋谷",
+          "note": "打卡購物",
+          "popup": true,
+          "detail": "十字路口及周邊商場",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%B8%8B%E8%B0%B7"
+        },
+        {
+          "time": "18:00",
+          "icon": "🍽️",
+          "title": "Dinner",
+          "note": "渋谷或新宿"
+        },
+        {
+          "time": "20:00",
+          "icon": "🛍️",
+          "title": "新宿",
+          "note": "夜行補給",
+          "popup": true,
+          "detail": "按你體力決定行到幾點",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E5%AE%BF"
+        }
+      ]
+    },
+    {
+      "label": "Day 9",
+      "date": "2月22日",
+      "title": "池袋  上野  回程",
+      "subtitle": "池袋  上野  返機場  CX501",
+      "isoDate": "2026-02-22",
+      "items": [
+        {
+          "time": "10:00",
+          "icon": "🛍️",
+          "title": "池袋",
+          "note": "最後補貨",
+          "popup": true,
+          "detail": "池袋一帶  百貨藥妝",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E6%B1%A0%E8%A2%8B"
+        },
+        {
+          "time": "12:30",
+          "icon": "🍽️",
+          "title": "Lunch",
+          "note": "池袋或上野"
+        },
+        {
+          "time": "14:30",
+          "icon": "🏞️",
+          "title": "上野",
+          "note": "散策  補貨",
+          "popup": true,
+          "detail": "上野公園一帶  視乎天氣",
+          "maps": "https://www.google.com/maps/search/?api=1&query=%E4%B8%8A%E9%87%8E"
+        },
+        {
+          "time": "18:00",
+          "icon": "🚆",
+          "title": "前往機場",
+          "note": "按航班預留充足時間"
+        },
+        {
+          "time": "21:30",
+          "icon": "✈️",
+          "title": "CX501 起飛",
+          "note": "東京 → 香港"
+        }
+      ]
+    }
+  ],
+  "snacks": {
+    "title": "小食清單",
+    "subtitle": "路過即食  不設時間",
+    "items": []
+  }
+}
