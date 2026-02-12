@@ -21,6 +21,18 @@
       background: url("assets/bg/bg_trip.png") center center / cover no-repeat;
       z-index: -1;
     }
+
+    .bg-fixed::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        rgba(255, 244, 235, 0.20),
+        rgba(255, 236, 220, 0.30)
+      );
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
@@ -39,7 +51,9 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding-top: env(safe-area-inset-top);
-      background: rgba(0,0,0,0.55);
+      background: rgba(245,245,247,0.40);
+      backdrop-filter: blur(10px) saturate(115%);
+      -webkit-backdrop-filter: blur(10px) saturate(115%);
     }
 
     .container {max-width: 480px;
