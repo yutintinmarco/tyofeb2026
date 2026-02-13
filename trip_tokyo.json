@@ -123,7 +123,8 @@
           "detail": "赤羽覓食  之後可早啲休息",
           "maps": "https://www.google.com/maps/search/?api=1&query=%E8%B5%A4%E7%BE%BD"
         }
-      ]
+      ],
+      "pass": "JR Pass"
     },
     {
       "label": "Day 3",
@@ -183,7 +184,8 @@
           "detail": "入場費及最後入場時間以官方為準",
           "maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%86%E3%83%AB%E3%83%9E%E3%83%BC%E6%B9%AF"
         }
-      ]
+      ],
+      "pass": "JR Pass"
     },
     {
       "label": "Day 4",
@@ -222,7 +224,8 @@
           "title": "Dinner",
           "note": "橫濱或返東京後再食"
         }
-      ]
+      ],
+      "pass": "JR Pass"
     },
     {
       "label": "Day 5",
@@ -270,7 +273,8 @@
           "title": "Hotel",
           "note": "早啲休息"
         }
-      ]
+      ],
+      "pass": "箱根周遊券"
     },
     {
       "label": "Day 6",
@@ -318,7 +322,8 @@
           "detail": "已確認 20:00 訂位  建議準時到達",
           "maps": "https://www.google.com/maps/search/?api=1&query=%E8%82%89%E5%B1%8B%E6%A8%AA%E4%B8%81%20%E7%A7%8B%E8%91%89%E5%8E%9F"
         }
-      ]
+      ],
+      "pass": "箱根周遊券"
     },
     {
       "label": "Day 7",
@@ -366,7 +371,8 @@
           "detail": "東京站一帶  丸之內夜景",
           "maps": "https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E4%BA%AC%E9%A7%85"
         }
-      ]
+      ],
+      "pass": "地鐵72小時券"
     },
     {
       "label": "Day 8",
@@ -423,7 +429,8 @@
           "detail": "按你體力決定行到幾點",
           "maps": "https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E5%AE%BF"
         }
-      ]
+      ],
+      "pass": "地鐵72小時券"
     },
     {
       "label": "Day 9",
@@ -468,7 +475,8 @@
           "title": "CX501 起飛",
           "note": "東京 → 香港"
         }
-      ]
+      ],
+      "pass": "地鐵72小時券"
     }
   ],
   "snacks": {
