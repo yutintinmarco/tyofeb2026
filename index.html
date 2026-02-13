@@ -317,7 +317,38 @@ flex: 1;
       color: #000000;
       margin-bottom: 8px;
     }
-    .timeline-item {
+    
+
+    /* Pass badge (方案 A) */
+    .pass-badge{
+      display:inline-block;
+      margin-left:10px;
+      padding:3px 10px;
+      font-size: calc(11px * var(--font-scale));
+      border-radius:999px;
+      font-weight:700;
+      letter-spacing:0.3px;
+      vertical-align: middle;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    .pass-jr{
+      background: rgba(0,90,180,0.12);
+      color: #004fa3;
+      border: 1px solid rgba(0,90,180,0.25);
+    }
+    .pass-hakone{
+      background: rgba(0,120,100,0.12);
+      color: #0a6a57;
+      border: 1px solid rgba(0,120,100,0.25);
+    }
+    .pass-metro{
+      background: rgba(140,0,120,0.12);
+      color: #8a006f;
+      border: 1px solid rgba(140,0,120,0.25);
+    }
+
+.timeline-item {
       display: flex;
       gap: 10px;
       padding: 10px 8px;
@@ -1356,7 +1387,14 @@ function getTokyoDateString() {
 
       if (todayIndex >= 0) {
         const day = data.days[todayIndex];
-        chip.textContent = "今日  Day " + (todayIndex + 1) + "（" + day.date + "）";
+        let passClass = "";
+        if (day.pass) {
+          if (String(day.pass).includes("JR")) passClass = "pass-jr";
+          else if (String(day.pass).includes("箱根")) passClass = "pass-hakone";
+          else if (String(day.pass).includes("地鐵")) passClass = "pass-metro";
+        }
+        chip.innerHTML = "今日  Day " + (todayIndex + 1) + "（" + day.date + "）" +
+          (day.pass ? "<br/><span class=\"pass-badge " + passClass + "\" style=\"margin-left:0;margin-top:4px;\">" + day.pass + "</span>" : "");
         chip.classList.add("active");
         hideSquare();
 
@@ -1447,6 +1485,16 @@ function getTokyoDateString() {
         const titleEl = document.createElement("div");
         titleEl.className = "section-title";
         titleEl.textContent = (day.date ? day.date + "  " : "") + (day.title || "");
+
+        if (day.pass) {
+          const badge = document.createElement("span");
+          badge.classList.add("pass-badge");
+          if (String(day.pass).includes("JR")) badge.classList.add("pass-jr");
+          else if (String(day.pass).includes("箱根")) badge.classList.add("pass-hakone");
+          else if (String(day.pass).includes("地鐵")) badge.classList.add("pass-metro");
+          badge.textContent = day.pass;
+          titleEl.appendChild(badge);
+        }
         content.appendChild(titleEl);
 
         if (day.subtitle) {
